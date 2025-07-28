@@ -6,7 +6,7 @@ from functools import partial
 from subways.structure.city import City
 from subways.types import CriticalValidationError, LonLat, OsmElementT
 
-DEFAULT_SPREADSHEET_ID = "1SEW1-NiNOnA2qDwievcxYV1FOaQl1mb1fdeyqAxHu3k"
+DEFAULT_SPREADSHEET_ID = "1tXHFXWqkQNrpQxSLX88RglTkpsA5PHMFsfwQ1nfau60"
 DEFAULT_CITIES_INFO_URL = (
     "https://docs.google.com/spreadsheets/d/"
     f"{DEFAULT_SPREADSHEET_ID}/export?format=csv"
