@@ -33,12 +33,8 @@ jobs:
     - name: Test subways with unittest
       run: |
         PYTHONPATH=. python3 scripts/process_subways.py -c "Paris" -l validation.log -d Paris.yaml
-    - name: Generate html
-      run: |
-        mkdir html
-        python3 tools/v2h/validation_to_html.py validation.log html
     - name: Upload log
       uses: actions/upload-artifact@v4
       with:
           name: validation_log
-          path: html/*
+          path: validation.log
