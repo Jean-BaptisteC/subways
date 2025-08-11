@@ -32,7 +32,7 @@ jobs:
         pip install -r scripts/requirements.txt
     - name: Test subways with unittest
       run: |
-        PYTHONPATH=. python3 scripts/process_subways.py -c "Paris Train" -l validation.log -d Paris.yaml
+        PYTHONPATH=. python3 scripts/process_subways.py -c "Paris RER" -l validation.log -d Paris.yaml
     - name: Upload log
       uses: actions/upload-artifact@v4
       with:
