@@ -27,7 +27,7 @@ jobs:
         python-version: "3.11"
     - name: Install dependencies
       run: |
-        apt install osmium-tool
+        sudo apt install osmium-tool
         python3 -m venv scripts/.venv
         source scripts/.venv/bin/activate
         pip install -r scripts/requirements.txt
