@@ -30,11 +30,12 @@ jobs:
         python3 -m venv scripts/.venv
         source scripts/.venv/bin/activate
         pip install -r scripts/requirements.txt
-    - name: Test subways with unittest
+    - name: Init vars
       run: |
-        PYTHONPATH=. python3 scripts/process_subways.py -c "Paris RER" -l validation.log -d Paris.yaml
-    - name: Upload log
-      uses: actions/upload-artifact@v4
-      with:
-          name: validation_log
-          path: validation.log
+        export PLANET=https://ftp5.gwdg.de/pub/misc/openstreetmap/planet.openstreetmap.org/pbf/planet-latest.osm.pbf
+        export PLANET_METRO="$HOME/metro/planet-metro.osm.pbf
+        export TMPDIR="$HOME/metro/tmp"
+        export HTML_DIR="$HOME/metro/tmp_html"
+        export DUMP="$HTML_DIR"
+    - name: Run script
+      run: scripts/process_subways.sh
