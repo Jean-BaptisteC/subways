@@ -32,7 +32,7 @@ jobs:
         pip install -r scripts/requirements.txt
     - name: Init vars
       run: |
-        export PLANET=https://ftp5.gwdg.de/pub/misc/openstreetmap/planet.openstreetmap.org/pbf/planet-latest.osm.pbf
+        export PLANET=https://planet.openstreetmap.org/pbf/planet-latest.osm.pbf
         export PLANET_METRO="$HOME/metro/planet-metro.osm.pbf
         export TMPDIR="$HOME/metro/tmp"
         export HTML_DIR="$HOME/metro/tmp_html"
