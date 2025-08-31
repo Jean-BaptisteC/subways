@@ -20,23 +20,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v3
+    - run: git clone -b clean_data https://codeberg.org/comaps/subways.git
+    - uses: actions/setup-python@v4
       with:
         python-version: "3.11"
-    - name: Install dependencies
+    - name: Install dependencies for linters
       run: |
-        sudo apt install osmium-tool
-        python3 -m venv scripts/.venv
-        source scripts/.venv/bin/activate
-        pip install -r scripts/requirements.txt
-    - name: Init vars
+        python -m pip install --upgrade pip
+        pip install flake8==6.0.0 black==23.1.0
+    - name: Lint with flake8
       run: |
-        export PLANET=https://planet.openstreetmap.org/pbf/planet-latest.osm.pbf
-        export PLANET_METRO="$HOME/metro/planet-metro.osm.pbf"
-        export TMPDIR="$HOME/metro/tmp"
-        export HTML_DIR="$HOME/metro/tmp_html"
-        export DUMP="$HTML_DIR"
-    - name: Run script
-      run: scripts/process_subways.sh
+        flake8
+    - name: Check with black
+      run: |
+        black --check --line-length 79 .
+    - name: Test subways with unittest
+      run: |
+        PYTHONPATH=. python3 scripts/process_subways.py -c "João" -l validation.log -d Paris.yaml
+    - name: Upload log
+      uses: actions/upload-artifact@v4
+      with:
+          name: validation_log
+          path: validation.log
