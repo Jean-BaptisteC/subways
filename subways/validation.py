@@ -245,9 +245,7 @@ def get_cities_info(
 
 
 def prepare_cities(
-    cities_info_url: str = DEFAULT_CITIES_INFO_URL, overground: bool = False
+    cities_info_url: str = DEFAULT_CITIES_INFO_URL, overground: bool = True
 ) -> list[City]:
-    if overground:
-        raise NotImplementedError("Overground transit not implemented yet")
     cities_info = get_cities_info(cities_info_url)
     return list(map(partial(City, overground=overground), cities_info))
