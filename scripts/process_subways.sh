@@ -231,8 +231,8 @@ fi
 
 if [ -n "${NEED_FILTER-}" ]; then
   check_osmium
-  QRELATIONS="r/route,route_master=subway,light_rail,monorail,train r/public_transport=stop_area,stop_area_group"
-  QNODES="n/railway=station,subway_entrance,train_station_entrance n/station=subway,light_rail,monorail n/subway=yes n/light_rail=yes n/monorail=yes n/train=yes"
+  QRELATIONS="r/route,route_master=subway,light_rail,monorail,train,rail r/public_transport=stop_area,stop_area_group"
+  QNODES="n/railway=station,subway_entrance,train_station_entrance n/station=subway,light_rail,monorail n/subway=yes n/light_rail=yes n/monorail=yes n/train=yes n/tram=yes"
   osmium tags-filter "$PLANET_METRO" $QRELATIONS $QNODES -o "$FILTERED_DATA" -O
 fi
 
