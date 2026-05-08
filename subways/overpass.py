@@ -40,6 +40,7 @@ def overpass_request(
 ) -> list[OsmElementT]:
     query = compose_overpass_request(overground, bboxes)
     url = f"{overpass_api}?data={urllib.parse.quote(query)}"
+    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
     response = urllib.request.urlopen(url, timeout=1000)
     if (r_code := response.getcode()) != 200:
         raise Exception(f"Failed to query Overpass API: HTTP {r_code}")
