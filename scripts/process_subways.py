@@ -53,7 +53,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--overpass-api",
-        default="http://overpass-api.de/api/interpreter",
+        default="https://overpass.private.coffee/api/interpreter",
         help="Overpass API URL",
     )
     parser.add_argument(
