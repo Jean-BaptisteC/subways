@@ -202,6 +202,7 @@ def validate_cities(cities: list[City]) -> list[City]:
 
 def get_cities_info(
     cities_info_url: str = DEFAULT_CITIES_INFO_URL,
+    overground: bool = False,
 ) -> list[dict]:
     response = urllib.request.urlopen(cities_info_url)
     if (
@@ -212,40 +213,48 @@ def get_cities_info(
             f"Failed to download cities spreadsheet: HTTP {r_code}"
         )
     data = response.read().decode("utf-8")
+    if overground:
+        # Structure de votre fichier distant overground : 
+        # #, City, Country, Region, Tram Lines, Trolleybus Lines, Bus Lines, ...
+        fieldnames = (
+            "id", "name", "country", "region", 
+            "num_tram_lines", "num_trolleybus_lines", "num_bus_lines", 
+            "num_other_lines", "bbox", "networks", "comments", "source"
+        )
+    else:
+        fieldnames = (
+            "id", "name", "country", "continent", 
+            "num_stations", "num_lines", "num_light_lines", 
+            "num_interchanges", "bbox", "networks"
+        )
+
     reader = csv.DictReader(
         data.splitlines(),
-        fieldnames=(
-            "id",
-            "name",
-            "country",
-            "continent",
-            "num_tram_lines",
-            "num_trolleybus_lines",
-            "num_bus_lines",
-            "num_other_lines",
-            "bbox",
-            "networks",
-        ),
+        fieldnames=fieldnames,
     )
 
     cities_info = list()
     names = set()
     next(reader)  # skipping the header
+    
     for city_info in reader:
         if city_info["id"] and city_info["bbox"]:
+            # Compatibilité logicielle : City.__init__ cherche 'continent'
+            # On utilise 'region' comme substitut si on est en overground
+            if overground and "continent" not in city_info:
+                city_info["continent"] = city_info.get("region", "Unknown")
+            
             cities_info.append(city_info)
             name = city_info["name"].strip()
             if name in names:
-                logging.warning(
-                    "Duplicate city name in city list: %s",
-                    city_info,
-                )
+                logging.warning("Duplicate city name: %s", name)
             names.add(name)
+            
     return cities_info
 
 
 def prepare_cities(
     cities_info_url: str = DEFAULT_CITIES_INFO_URL, overground: bool = True
 ) -> list[City]:
-    cities_info = get_cities_info(cities_info_url)
+    cities_info = get_cities_info(cities_info_url, overground=overground)
     return list(map(partial(City, overground=overground), cities_info))
