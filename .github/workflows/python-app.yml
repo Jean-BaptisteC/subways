@@ -31,7 +31,7 @@ jobs:
         pip install flake8==6.0.0 black==23.1.0
     - name: Test subways with unittest
       run: |
-        PYTHONPATH=. python3 scripts/process_subways.py -c "Dijon" -l validation.log -d Dijon.yaml -t
+        PYTHONPATH=. python3 scripts/process_subways.py -c "Lille" -l validation.log -d Lille.yaml -t
     - name: Upload log
       uses: actions/upload-artifact@v4
       with:
